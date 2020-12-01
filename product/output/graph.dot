@@ -1,0 +1,43 @@
+// Huffman Tree
+digraph {
+	0 [label=0 shape=doublecircle]
+	"" -> 0
+	00 [label=00 shape=doublecircle]
+	0 -> 00
+	000 [label="27: 000" color=black fillcolor=yellow shape=invhouse style=filled]
+	00 -> 000
+	001 [label=001 shape=doublecircle]
+	00 -> 001
+	0010 [label=0010 shape=doublecircle]
+	001 -> 0010
+	00100 [label="30: 00100" color=black fillcolor=yellow shape=invhouse style=filled]
+	0010 -> 00100
+	00101 [label="20: 00101" color=black fillcolor=yellow shape=invhouse style=filled]
+	0010 -> 00101
+	0011 [label="21: 0011" color=black fillcolor=yellow shape=invhouse style=filled]
+	001 -> 0011
+	01 [label="25: 01" color=black fillcolor=yellow shape=invhouse style=filled]
+	0 -> 01
+	1 [label=1 shape=doublecircle]
+	"" -> 1
+	10 [label=10 shape=doublecircle]
+	1 -> 10
+	100 [label="23: 100" color=black fillcolor=yellow shape=invhouse style=filled]
+	10 -> 100
+	101 [label=101 shape=doublecircle]
+	10 -> 101
+	1010 [label="22: 1010" color=black fillcolor=yellow shape=invhouse style=filled]
+	101 -> 1010
+	1011 [label=1011 shape=doublecircle]
+	101 -> 1011
+	10110 [label="29: 10110" color=black fillcolor=yellow shape=invhouse style=filled]
+	1011 -> 10110
+	10111 [label="28: 10111" color=black fillcolor=yellow shape=invhouse style=filled]
+	1011 -> 10111
+	11 [label=11 shape=doublecircle]
+	1 -> 11
+	110 [label="26: 110" color=black fillcolor=yellow shape=invhouse style=filled]
+	11 -> 110
+	111 [label="24: 111" color=black fillcolor=yellow shape=invhouse style=filled]
+	11 -> 111
+}
