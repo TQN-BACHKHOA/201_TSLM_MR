@@ -81,7 +81,7 @@ node = encode(freq)
 
 ###Write to tex file
 latexFile.init()
-latexFile.addString(input_string="Tu ma cua cac node: ", enter=1)
+latexFile.addString(input_string="Từ mã của các nodes: ", enter=1)
 latexFile.init_item()
 node[1].preorder() 
 latexFile.end_item()
@@ -92,14 +92,21 @@ latexFile.addString(input_string="Entropy:")
 entropy_exp = Eq(Sum(Indexed('p',i)*log(1/(Indexed('p',i)),2),(i,0,'k')), round(entropy,3))
 latexFile.addString(input_string=latex(entropy_exp), math=True)
 
-latexFile.addString(input_string="Chieu dai TB tu ma:")
+latexFile.addString(input_string="Chiều dài TB từ mã:")
 tuma_exp = Eq(Sum(Indexed('p',i)*Indexed('N',i),(i,0,'k')), round(average_length,3))
 latexFile.addString(input_string='N = '+latex(tuma_exp), math=True)
 
-latexFile.addString(input_string="Hieu suat Huffman:")
+latexFile.addString(input_string="Hiệu suất Huffman:")
 efficiency = entropy/average_length
 efficiency_exp = Eq((H/N), round(efficiency,3))
 latexFile.addString(input_string=latex(efficiency_exp), math=True)
+
+latexFile.includeImage('graph.png')
+with open('output/latex_output.tex','a') as f:
+    f.write('\\begin{center}\n')
+    f.write('\\textit{Hình 1. Cây Huffman}\n')
+    f.write('\\end{center}\n')
+    f.close()
 
 latexFile.end()
 
@@ -113,4 +120,4 @@ else:
 ###Graph the Huffman Tree
 with open('output/graph.dot','w') as f:
     f.write(dot.source)
-subprocess.call('dot -Tpng output/graph.dot -o output/graph.png', shell=True)
+subprocess.call('dot -Tpng output/graph.dot -o output/image/graph.png', shell=True)

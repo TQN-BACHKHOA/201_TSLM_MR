@@ -3,8 +3,10 @@ import subprocess, os
 def init():
     with open('output/latex_output.tex','w') as f:
         f.write('\\documentclass{article}\n')
+        f.write('\\usepackage[utf8]{vietnam}\n')
         f.write('\\usepackage{amsmath}\n')
         f.write('\\usepackage{graphicx}\n')
+        f.write('\\graphicspath{ {./image/} }')
         f.write('\\usepackage{hyperref}\n')
         f.write('\\title{TRUYEN SO LIEU VA MANG}\n\n')
         f.write('\\begin{document}\n\n')
@@ -35,4 +37,12 @@ def addString(input_string=None, item=None, enter=0, math=None):
         if math is not None:
             f.write('\n\\]')
         f.write('\n')
+        f.close()
+
+def includeImage(img_name=None):
+    with open('output/latex_output.tex','a') as f:
+        if img_name is not None:
+            f.write('\\includegraphics[width=\\textwidth]{')
+            f.write(img_name)
+            f.write('}\n')
         f.close()

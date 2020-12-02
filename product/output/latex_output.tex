@@ -1,12 +1,13 @@
 \documentclass{article}
+\usepackage[utf8]{vietnam}
 \usepackage{amsmath}
 \usepackage{graphicx}
-\usepackage{hyperref}
+\graphicspath{ {./image/} }\usepackage{hyperref}
 \title{TRUYEN SO LIEU VA MANG}
 
 \begin{document}
 
-Tu ma cua cac node: 
+Từ mã của các nodes: 
 \begin{itemize}
 \item 27: 000
 \item 30: 00100
@@ -24,12 +25,16 @@ Entropy:
 \[
 \sum_{i=0}^{k} \frac{\log{\left(\frac{1}{{p}_{i}} \right)} {p}_{i}}{\log{\left(2 \right)}} = 3.143
 \]
-Chieu dai TB tu ma:
+Chiều dài TB từ mã:
 \[
 N = \sum_{i=0}^{k} {N}_{i} {p}_{i} = 3.179
 \]
-Hieu suat Huffman:
+Hiệu suất Huffman:
 \[
 \frac{H}{N} = 0.989
 \]
+\includegraphics[width=\textwidth]{graph.png}
+\begin{center}
+\textit{Hình 1. Cây Huffman}
+\end{center}
 \end{document}
