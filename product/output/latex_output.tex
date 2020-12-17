@@ -1,40 +1,84 @@
 \documentclass{article}
 \usepackage[utf8]{vietnam}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
-\graphicspath{ {./image/} }\usepackage{hyperref}
-\title{TRUYEN SO LIEU VA MANG}
+\usepackage{tikz}
+\usepackage{forest}
+\usetikzlibrary{shapes}
+\usepackage{hyperref}
+\newcounter{figureCnt}
+\newenvironment{figureCnt}[1][]{\refstepcounter{figureCnt}\par\medskip\textbf{Figure~\thefigureCnt. #1} \rmfamily}{\medskip}\title{TRUYEN SO LIEU VA MANG}
 
 \begin{document}
 
-Từ mã của các nodes: 
-\begin{itemize}
-\item F: 000
-\item E: 001
-\item A: 01
-\item D: 100
-\item C: 101
-\item H: 11000
-\item I: 11001
-\item J: 110100
-\item K: 110101
-\item G: 11011
-\item B: 111
-\end{itemize}
-Entropy:
+\begin{center}
+\Large
+\textbf{Truyền Số Liệu và Mạng Mở Rộng}
+\large
+\end{center}
+
+\begin{center}
+\begin{forest}
+[Root [0, for tree={circle,draw}[00, for tree={circle,draw}[E: 000, for tree={rectangle,draw,fill=green}, rotate={-90}][001, for tree={circle,draw}[0010, for tree={circle,draw}[K: 00100, for tree={rectangle,draw,fill=green}, rotate={-90}][J: 00101, for tree={rectangle,draw,fill=green}, rotate={-90}]][H: 0011, for tree={rectangle,draw,fill=green}, rotate={-90}]]][A: 01, for tree={rectangle,draw,fill=green}, rotate={-90}]][1, for tree={circle,draw}[10, for tree={circle,draw}[D: 100, for tree={rectangle,draw,fill=green}, rotate={-90}][101, for tree={circle,draw}[F: 1010, for tree={rectangle,draw,fill=green}, rotate={-90}][1011, for tree={circle,draw}[I: 10110, for tree={rectangle,draw,fill=green}, rotate={-90}][G: 10111, for tree={rectangle,draw,fill=green}, rotate={-90}]]]][11, for tree={circle,draw}[C: 110, for tree={rectangle,draw,fill=green}, rotate={-90}][B: 111, for tree={rectangle,draw,fill=green}, rotate={-90}]]]]\end{forest}
+\end{center}
+\begin{center}\begin{figureCnt}
+The Huffman Tree
+\end{figureCnt}
+\end{center}\begin{table}[h!]
+\centering\begin{tabular}{||c c c||}
+\hline
+ Symbol & Probability & Code \\ [0.5ex]
+\hline
+\hline
+E & 0.1 & 000 \\ 
+\hline
+\hline
+K & 0.02 & 00100 \\ 
+\hline
+\hline
+J & 0.03 & 00101 \\ 
+\hline
+\hline
+H & 0.051 & 0011 \\ 
+\hline
+\hline
+A & 0.21 & 01 \\ 
+\hline
+\hline
+D & 0.12 & 100 \\ 
+\hline
+\hline
+F & 0.06 & 1010 \\ 
+\hline
+\hline
+I & 0.04 & 10110 \\ 
+\hline
+\hline
+G & 0.049 & 10111 \\ 
+\hline
+\hline
+C & 0.15 & 110 \\ 
+\hline
+\hline
+B & 0.17 & 111 \\ 
+\hline
+\end{tabular}
+\end{table}
+
+\begin{center}\begin{figureCnt}
+Bảng từ mã các nodes
+\end{figureCnt}
+\end{center}Entropy:
 \[
-\sum_{i=0}^{k} \frac{\log{\left(\frac{1}{{p}_{i}} \right)} {p}_{i}}{\log{\left(2 \right)}} = 3.11
+\sum_{i=0}^{k} \frac{\log{\left(\frac{1}{{p}_{i}} \right)} {p}_{i}}{\log{\left(2 \right)}} = 3.143
 \]
 Chiều dài TB từ mã:
 \[
-N = \sum_{i=0}^{k} {N}_{i} {p}_{i} = 3.15
+N = \sum_{i=0}^{k} {N}_{i} {p}_{i} = 3.179
 \]
 Hiệu suất Huffman:
 \[
-\frac{H}{N} = 0.987
+\frac{H}{N} = 0.989
 \]
-\includegraphics[width=\textwidth]{graph.png}
-\begin{center}
-\textit{Hình 1. Cây Huffman}
-\end{center}
 \end{document}

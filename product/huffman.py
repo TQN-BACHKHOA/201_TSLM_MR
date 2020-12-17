@@ -1,19 +1,27 @@
 import queue, math, os, subprocess
-from graphviz import Digraph
 from openpyxl import load_workbook
 from sympy import *
-import latexFile as latexFile
+from os import path
+import latexFile as ltx
 init_printing()
 
 wb = load_workbook("data.xlsx")
 ws = wb.worksheets[0]
-dot = Digraph(comment='Huffman Tree')
 average_length = 0 
 entropy = 0
 efficiency = 0
 freq = []
 probability_CS = 0
 huffman_string = []
+output_freq = []
+
+if not path.exists("output"):
+    os.mkdir("output")
+path1 = 'output'
+file = 'latex_output.tex'
+with open(os.path.join(path1, file), 'w') as fp: 
+    pass
+latexFile = ltx.latexClass(os.path.join(path1, file))
 
 class HuffmanNode(object):
     def __init__(self, left=None, right=None):
@@ -26,23 +34,28 @@ class HuffmanNode(object):
         if path is None:                                
             path = []
         if self.left is not None:
-            if isinstance(myMapFunc(_string=self.left[1]), HuffmanNode):   
-                create_TreeNode(start=convert(path), end=convert(path+['0']), text=convert(path+['0']))
-                myMapFunc(_string=self.left[1]).preorder(path+['0'])
+            if isinstance(myMapFunc(self.left[1]), HuffmanNode):   
+                latexFile.addNode_tree(_text=convert(path+['0']), _type="NODE")
+                myMapFunc(self.left[1]).preorder(path+['0'])
+                latexFile.closeNode_tree()
             else:
-                create_TreeLeaf(start=convert(path), end=convert(path+['0']), text=convert(self.left[1]+convert([': ']+path+['0']))) 
-                latexFile.addString(input_string=convert(self.left[1] + convert([': ']+path+['0'])), item=True)
+                latexFile.addNode_tree(_text=convert(self.left[1]+convert([': ']+path+['0'])), _type="LEAF")
+                output_freq.append((self.left[1], str(self.left[0]), convert(path+['0'])))
                 print(convert(self.left[1] + convert([': ']+path+['0'])))
                 average_length += self.left[0]*(len(path)+1)
+                latexFile.closeNode_tree()
+            
         if self.right is not None:
-            if isinstance(myMapFunc(_string=self.right[1]), HuffmanNode):
-                create_TreeNode(start=convert(path), end=convert(path+['1']), text=convert(path+['1']))
-                myMapFunc(_string=self.right[1]).preorder(path+['1'])
+            if isinstance(myMapFunc(self.right[1]), HuffmanNode):
+                latexFile.addNode_tree(_text=convert(path+['1']), _type="NODE")
+                myMapFunc(self.right[1]).preorder(path+['1'])
+                latexFile.closeNode_tree()
             else:
-                create_TreeLeaf(start=convert(path), end=convert(path+['1']), text=convert(self.right[1]+convert([': ']+path+['1'])))  
-                latexFile.addString(input_string=convert(self.right[1] + convert([': ']+path+['1'])), item=True)
+                latexFile.addNode_tree(_text=convert(self.right[1]+convert([': ']+path+['1'])), _type="LEAF")
+                output_freq.append((self.right[1], str(self.right[0]), convert(path+['1'])))
                 print(convert(self.right[1] + convert([': ']+path+['1'])))
                 average_length += self.right[0]*(len(path)+1)
+                latexFile.closeNode_tree()
 
 def encode(frequencies):
     p = queue.PriorityQueue()
@@ -55,25 +68,16 @@ def encode(frequencies):
         p.put((Left[0] + Right[0], str(node)))
     return p.get()
 
-def create_TreeNode(start=None, end=None, text=None):
-    dot.node(end, text, shape='doublecircle')
-    dot.edge(start, end)
-
-def create_TreeLeaf(start=None, end=None, text=None):
-    dot.node(end, text, shape='invhouse', color='black', fillcolor='yellow', style='filled')
-    dot.edge(start, end)
-
 def convert(char_array):
     return("".join(char_array))
 
-def myMapFunc(_huffman=None, _string=None):
-    if _huffman is not None:
-        return str(_huffman)
-    elif _string is not None:
-        for _node in huffman_string:
-            if _string == _node[1]:
-                return _node[0]
-        return _string
+def myMapFunc(_string=None):
+    for _node in huffman_string:
+        if _string == _node[1]:
+            return _node[0]
+    return _string
+
+## Begin the program    
 
 for row in ws.iter_rows(min_col=1, max_col=2, min_row=2):
     row = [cell.value for cell in row]
@@ -91,11 +95,14 @@ node = encode(freq)
 
 ###Write to tex file
 latexFile.init()
-latexFile.addString(input_string="Từ mã của các nodes: ", enter=1)
-latexFile.init_item()
-rootNODE = myMapFunc(_string=node[1])
+rootNODE = myMapFunc(node[1])
+latexFile.init_tree()
 rootNODE.preorder()
-latexFile.end_item()
+latexFile.end_tree()
+latexFile.add_figure("The Huffman Tree")
+
+latexFile.add_table(_array=output_freq)
+latexFile.add_figure("Bảng từ mã các nodes")
 
 i, H, N = symbols('i H N')
 
@@ -112,23 +119,7 @@ efficiency = entropy/average_length
 efficiency_exp = Eq((H/N), round(efficiency,3))
 latexFile.addString(input_string=latex(efficiency_exp), math=True)
 
-latexFile.includeImage('graph.png')
-with open('output/latex_output.tex','a') as f:
-    f.write('\\begin{center}\n')
-    f.write('\\textit{Hình 1. Cây Huffman}\n')
-    f.write('\\end{center}\n')
-    f.close()
-
 latexFile.end()
 
 ###Convert from tex to pdf
 x = subprocess.call('pdflatex -output-directory=output output/latex_output.tex', shell=True)
-if x != 0:
-    print('Exit-code not 0, check result!')
-else:
-    os.system('start latex_output.pdf')
-
-###Graph the Huffman Tree
-with open('output/graph.dot','w') as f:
-    f.write(dot.source)
-subprocess.call('dot -Tpng output/graph.dot -o output/image/graph.png', shell=True)
